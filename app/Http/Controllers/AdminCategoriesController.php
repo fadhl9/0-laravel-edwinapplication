@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class AdminPostsController extends Controller
+class AdminCategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class AdminPostsController extends Controller
     public function index()
     {
         //
-        return view('admin.posts.index');
+        return view('admin.categories.index');
     }
 
     /**
@@ -27,7 +27,7 @@ class AdminPostsController extends Controller
     public function create()
     {
         //
-        return view('admin.posts.create');
+        return view('admin.categories.create');
     }
 
     /**
@@ -61,7 +61,7 @@ class AdminPostsController extends Controller
     public function edit($id)
     {
         //
-        return view('admin.posts.edit');
+        return view('admin.categories.edit');
     }
 
     /**

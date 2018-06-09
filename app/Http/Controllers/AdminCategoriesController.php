@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Category;
 
 use App\Http\Requests;
+use Illuminate\Http\Request;
+use App\Http\Requests\CategoriesRequest;
 
 class AdminCategoriesController extends Controller
 {
@@ -16,7 +18,8 @@ class AdminCategoriesController extends Controller
     public function index()
     {
         //
-        return view('admin.categories.index');
+        $categories = Category::all();
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -36,9 +39,12 @@ class AdminCategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoriesRequest $request)
     {
         //
+        $input = $request->all();
+        Category::create($input);
+        return redirect('/admin/categories');
     }
 
     /**
@@ -61,7 +67,8 @@ class AdminCategoriesController extends Controller
     public function edit($id)
     {
         //
-        return view('admin.categories.edit');
+        $category = Category::findOrFail($id);
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -71,9 +78,11 @@ class AdminCategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoriesRequest $request, $id)
     {
         //
+        Category::findOrFail($id)->update($request->all());
+        return redirect('/admin/categories');
     }
 
     /**
@@ -85,5 +94,7 @@ class AdminCategoriesController extends Controller
     public function destroy($id)
     {
         //
+        Category::findOrFail($id)->delete();
+        return redirect('/admin/categories');
     }
 }

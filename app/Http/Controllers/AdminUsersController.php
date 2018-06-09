@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Role;
 use App\Photo;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\UsersRequest;
 use App\Http\Requests\UsersEditRequest;
 
@@ -135,6 +135,8 @@ class AdminUsersController extends Controller
         $user = User::findOrFail($id);
         unlink(public_path() . $user->photo->file);
         $user->delete();
+        // I added this to delete the photo
+        $user->photo()->delete();
 
         Session::flash('delete_user', 'User deleted');
         return redirect('/admin/users');

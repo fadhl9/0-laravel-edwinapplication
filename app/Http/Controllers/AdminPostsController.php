@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
+use App\User;
+use App\Photo;
+use App\Http\Requests;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Http\Requests\PostsCreateRequest;
 
 class AdminPostsController extends Controller
 {
@@ -16,7 +22,8 @@ class AdminPostsController extends Controller
     public function index()
     {
         //
-        return view('admin.posts.index');
+        $posts = Post::all();
+        return view('admin.posts.index', compact('posts'));
     }
 
     /**
@@ -27,7 +34,8 @@ class AdminPostsController extends Controller
     public function create()
     {
         //
-        return view('admin.posts.create');
+        $users = User::lists('name', 'id')->all();
+        return view('admin.posts.create', compact('users'));
     }
 
     /**
@@ -36,9 +44,26 @@ class AdminPostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostsCreateRequest $request)
     {
         //
+        $input  = $request->all();
+        $user   = Auth::user();
+        
+        if($file = $request->file('photo_id')){
+            $name = time() . $file->getClientOriginalName();
+            $file->move('images', $name);
+            $photo = Photo::create(['file'=>$name]);
+            $input['photo_id'] = $photo->id;
+        }
+        // this is my way
+        // $input['user_id'] = $user->id;
+        // Post::create($input);
+        // my way end header_register_callback
+        // his way start here - relationship way
+        $user->posts()->create($input);
+        // end here
+        return redirect('/admin/posts');
     }
 
     /**

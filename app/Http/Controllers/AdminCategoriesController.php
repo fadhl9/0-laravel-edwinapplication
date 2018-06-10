@@ -42,8 +42,7 @@ class AdminCategoriesController extends Controller
     public function store(CategoriesRequest $request)
     {
         //
-        $input = $request->all();
-        Category::create($input);
+        Category::create($request->all());
         return redirect('/admin/categories');
     }
 

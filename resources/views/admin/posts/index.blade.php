@@ -12,6 +12,7 @@
             <th>Category</th>
             <th>Title</th>
             <th>Body</th>
+            <th>View</th>
             <th>Created_at</th>
             <th>Updated_at</th>
         </tr>
@@ -26,6 +27,11 @@
             <td>{{ $post->category->name }}</td>
             <td><a href="{{ route('admin.posts.edit', $post->id) }}">{{ $post->title }}</a></td>
             <td>{{ str_limit($post->body, 7) }}</td>
+            <td>
+                <a href="{{ route('home.post', $post->id) }}">Post </a>
+                <span> | </span>
+                <a href="{{ route('admin.comments.show', $post->id) }}"> Comment</a>
+            </td>
             <td>{{ $post->created_at->diffForhumans() }}</td>
             <td>{{ $post->updated_at->diffForhumans() }}</td>
         </tr>
